@@ -23,3 +23,18 @@ app.post("/signup",async (req,res)=>{
     await user.save();
     res.send("added user");
 });
+
+app.get("/feed",async (req,res)=>{
+    let allData = await UserModel.find({}).lean();
+    allData = allData.map( (val) => {
+        delete val.password;
+        return val;
+    } )
+    res.json(allData);
+});
+
+app.get("/user/:name",async (req,res)=>{
+    let user = await UserModel.find({firstName:req.params.name}).lean();
+    delete user.password;
+    res.send(user);
+})
