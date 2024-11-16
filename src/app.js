@@ -18,10 +18,16 @@ connect()
 ///////
 app.use(express.json());
 app.post("/signup",async (req,res)=>{
-    const userObj = req.body ;
-    const user = new UserModel(userObj);
-    await user.save();
-    res.send("added user");
+    try{
+        const userObj = req.body ;
+        const user = new UserModel(userObj);
+        await user.save();
+        res.send("added user");
+    }
+    catch(err){
+        console.log(err);
+        res.send("pora puka");
+    }
 });
 
 app.get("/feed",async (req,res)=>{
