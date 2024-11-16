@@ -4,6 +4,8 @@ const PORT = 3000;
 const UserModel = require("./models/usermodel.js");
 ////Connect to data base
 const {connect} = require("./config/database.js");
+var cookieParser = require('cookie-parser')
+
 /////create a server
 connect()
 .then(()=>{
@@ -17,6 +19,7 @@ connect()
 });
 ///////
 app.use(express.json());
+app.use(cookieParser())
 app.post("/signup",async (req,res)=>{
     try{
         const userObj = req.body ;
@@ -43,4 +46,14 @@ app.get("/user/:name",async (req,res)=>{
     let user = await UserModel.find({firstName:req.params.name}).lean();
     delete user.password;
     res.send(user);
+})
+
+/////
+app.get("/setC",(req,res)=>{
+    res.cookie("result","tcs");
+    res.send("puka");
+});
+app.get("/getC",(req,res)=>{
+    console.log( req.cookies.result ); 
+    res.send("sulli");
 })
